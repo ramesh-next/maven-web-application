@@ -3,7 +3,7 @@ node{
 def mavenhome = tool name:"maven3.8.6"
 
 echo "Build number: ${env.BUILD_NUMBER}"
-echo "Job name: ${env.JOB_NAME}"
+//echo "Job name: ${env.JOB_NAME}"
 echo "Node name: ${NODE_NAME}"
 
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
@@ -16,6 +16,7 @@ stage('Build') {
 sh "${mavenhome}/bin/mvn clean package"
 }
 
+/*
 stage('ExecuteSonarQubeReport'){
 sh "${mavenhome}/bin/mvn sonar:sonar"
 }
@@ -30,5 +31,5 @@ sshagent(['bf32aca7-9b12-404b-9f17-4b9198260fd6']) {
 }
 }
 
-
-}
+*/
+}//node closing

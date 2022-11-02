@@ -8,6 +8,8 @@ echo "Node name: ${NODE_NAME}"
 
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
 
+try{
+
 stage('checkoutcode'){
 git credentialsId: 'a3cb1a70-ae4c-4f23-bfd5-59c0ce8ab0ea', url: 'https://github.com/ramesh-next/maven-web-application.git'
 }
@@ -32,4 +34,13 @@ sshagent(['bf32aca7-9b12-404b-9f17-4b9198260fd6']) {
 }
 
 */
+}//try closing
+catch(e){
+currentBuild.result = "FAILURE"
+}//catch block closing
+
+finally{
+sendslacknotifications(currentBuild.result)
+}//finally closing
+
 }//node closing
